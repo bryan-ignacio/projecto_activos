@@ -1,0 +1,24 @@
+digraph G {
+rankdir=LR;
+node[shape=box];
+H0[label="H0", group=1, style=filled, color=lightblue];
+H1[label="H1", group=1, style=filled, color=lightblue];
+H2[label="H2", group=1, style=filled, color=lightblue];
+V0[label="V0", style=filled, color=lightgreen];
+V1[label="V1", style=filled, color=lightgreen];
+N5[label="5", group=8];
+N8[label="8", group=2];
+N15[label="15", group=10];
+N10[label="10", group=3];
+H0 -> N5 [dir=both];
+H1 -> N8 [dir=both];
+H2 -> N10 [dir=both];
+V0 -> N5 [dir=both];
+V1 -> N15 [dir=both];
+N8 -> N15 [dir=both];
+N5 -> N8 [dir=both];
+N15 -> N10 [dir=both];
+H0 -> H1 [dir=both];
+H1 -> H2 [dir=both];
+V0 -> V1 [dir=both];
+}

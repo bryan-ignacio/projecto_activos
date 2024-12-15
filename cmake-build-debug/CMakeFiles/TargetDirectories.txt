@@ -1,0 +1,3 @@
+/Users/bryan/Developer/project-uno/cmake-build-debug/CMakeFiles/project_uno.dir
+/Users/bryan/Developer/project-uno/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/bryan/Developer/project-uno/cmake-build-debug/CMakeFiles/rebuild_cache.dir
