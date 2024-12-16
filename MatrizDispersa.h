@@ -257,35 +257,31 @@ void MatrizDispersa::insertarAlFinal(Node *valor, Node *cabeH, Node *cabeV) {
 
 void MatrizDispersa::reporte() {
     string dot = "digraph MatrizDispersa {\n";
-    dot += "rankdir=LR;\n"; // Orientación horizontal
+    dot += "rankdir=TB;\n"; // Configuración base de arriba hacia abajo
     dot += "node[shape=box, style=filled, color=lightgrey];\n";
 
-    // Agrupación de cabeceras horizontales
-    dot += "subgraph cluster_horizontales {\n";
-    dot += "label=\"Cabeceras Horizontales\";\n";
+    // Cabeceras Horizontales (Departamentos en el eje X)
+    dot += "{ rank=same; ";
     Node *hdH = this->cabeH;
     while (hdH != nullptr) {
-        dot += "H_" + hdH->user->getDepartamento() + "[label=\"H:" + hdH->user->getDepartamento() + "\", color=lightblue];\n";
+        dot += "H_" + hdH->user->getDepartamento() + "[label=\"" + hdH->user->getDepartamento() + "\", color=lightblue]; ";
         hdH = hdH->sig;
     }
     dot += "}\n";
 
-    // Agrupación de cabeceras verticales
-    dot += "subgraph cluster_verticales {\n";
-    dot += "label=\"Cabeceras Verticales\";\n";
+    // Cabeceras Verticales (Empresas en el eje Y)
     Node *hdV = this->cabeV;
     while (hdV != nullptr) {
-        dot += "V_" + hdV->user->getEmpresa() + "[label=\"V:" + hdV->user->getEmpresa() + "\", color=lightgreen];\n";
+        dot += "V_" + hdV->user->getEmpresa() + "[label=\"" + hdV->user->getEmpresa() + "\", color=lightgreen];\n";
         hdV = hdV->abajo;
     }
-    dot += "}\n";
 
-    // Nodos internos
+    // Nodos internos (Usuarios)
     Node *horiz = this->cabeH;
     while (horiz != nullptr) {
         Node *aux = horiz->abajo;
         while (aux != nullptr) {
-            dot += "N_" + aux->user->getFullName() + "[label=\"" + aux->user->toString() + "\", color=white];\n";
+            dot += "N_" + aux->user->getUsername() + "[label=\"" + aux->user->getUsername() + "\", color=white];\n";
             aux = aux->abajo;
         }
         horiz = horiz->sig;
@@ -299,11 +295,11 @@ void MatrizDispersa::reporte() {
         }
         Node *aux = horiz->abajo;
         if (aux != nullptr) {
-            dot += "H_" + horiz->user->getDepartamento() + " -> N_" + aux->user->getFullName() + " [dir=both];\n";
+            dot += "H_" + horiz->user->getDepartamento() + " -> N_" + aux->user->getUsername() + " [dir=both];\n";
         }
         while (aux != nullptr) {
             if (aux->abajo != nullptr) {
-                dot += "N_" + aux->user->getFullName() + " -> N_" + aux->abajo->user->getFullName() + " [dir=both];\n";
+                dot += "N_" + aux->user->getUsername() + " -> N_" + aux->abajo->user->getUsername() + " [dir=both];\n";
             }
             aux = aux->abajo;
         }
@@ -318,11 +314,11 @@ void MatrizDispersa::reporte() {
         }
         Node *aux = vert->sig;
         if (aux != nullptr) {
-            dot += "V_" + vert->user->getEmpresa() + " -> N_" + aux->user->getFullName() + " [dir=both];\n";
+            dot += "V_" + vert->user->getEmpresa() + " -> N_" + aux->user->getUsername() + " [dir=both];\n";
         }
         while (aux != nullptr) {
             if (aux->sig != nullptr) {
-                dot += "N_" + aux->user->getFullName() + " -> N_" + aux->sig->user->getFullName() + " [dir=both];\n";
+                dot += "N_" + aux->user->getUsername() + " -> N_" + aux->sig->user->getUsername() + " [dir=both];\n";
             }
             aux = aux->sig;
         }

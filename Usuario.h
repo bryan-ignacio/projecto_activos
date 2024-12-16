@@ -89,6 +89,5 @@ string Usuario::getEmpresa() {
 
 string Usuario::toString() {
     return "Usuario->[ username: " + this->username + " password: " + this->password + " fullname: " + this->fullName +
-           +" departamento: " + this->departamentoH + " empresa: " + this->empresaV + " ]";
+           " departamento: " + this->departamentoH + " empresa: " + this->empresaV + " ]";
 }
-
