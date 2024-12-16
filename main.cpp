@@ -1,6 +1,10 @@
 #include <iostream>
+#include "MatrizDispersa.h"
+
 
 using namespace std;
+
+MatrizDispersa *matriz = new MatrizDispersa();
 
 int main() {
     int option;
@@ -15,6 +19,7 @@ int main() {
         cin >> option;
         string usuario;
         string contrasena;
+        string fullName;
         string departamento;
         string empresa;
         switch (option) {
@@ -45,16 +50,40 @@ int main() {
                         cout << "==================================================" << endl;
                         cout << "\t>Ingresa una opcion: ";
                         cin >> optionAdmin;
+                        Usuario *user;
+                        Node *node;
+                        string name;
+                        string pass;
+                        string full;
+                        string depa;
+                        string empr;
                         switch (optionAdmin) {
                             case 1:
                                 cout << "........................." << endl;
                                 cout << "Registrar Usuario: " << endl;
                                 cout << "........................." << endl;
+                                cout << "\t>Ingrese username: " << endl;
+                                cin >> name;
+                                cout << "\t>Ingrese password: " << endl;
+                                cin >> pass;
+                                cin.ignore(); // Limpia el buffer antes de usar getline.
+                                cout << "\t>Ingrese FullName: " << endl;
+                                getline(cin, full);
+                                cout << "\t>Ingrese Departamento: " << endl;
+                                getline(cin, depa);
+                                cout << "\t>Ingrese Empresa: " << endl;
+                                getline(cin, empr);
+
+                                // agregar el nuevo Usuario a la matriz.
+                                user = new Usuario(usuario, contrasena, fullName, departamento, empresa);
+                                node = new Node(user);
+                                matriz->insertarValor(node, node->user->getDepartamento(), node->user->getEmpresa());
+                                cout << "........................." << endl;
                                 break;
                             case 2:
                                 cout << "........................." << endl;
                                 cout << "Reporte Matriz.: " << endl;
-
+                                matriz->reporte();
                                 cout << "........................." << endl;
                                 break;
                             case 3:
