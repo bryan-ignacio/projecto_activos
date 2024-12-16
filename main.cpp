@@ -4,9 +4,10 @@
 
 using namespace std;
 
-MatrizDispersa *matriz = new MatrizDispersa();
+
 
 int main() {
+    MatrizDispersa *matriz = new MatrizDispersa();
     int option;
     while (true) {
         cout << "=========================" << endl;
@@ -73,9 +74,8 @@ int main() {
                                 getline(cin, depa);
                                 cout << "\t>Ingrese Empresa: " << endl;
                                 getline(cin, empr);
-
                                 // agregar el nuevo Usuario a la matriz.
-                                user = new Usuario(usuario, contrasena, fullName, departamento, empresa);
+                                user = new Usuario(name, pass,full, depa,empr);
                                 node = new Node(user);
                                 matriz->insertarValor(node, node->user->getDepartamento(), node->user->getEmpresa());
                                 cout << "........................." << endl;

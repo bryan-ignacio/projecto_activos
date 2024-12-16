@@ -1,0 +1,26 @@
+digraph MatrizDispersa {
+rankdir=TB;
+graph[fontsize=12, labelloc=t, label="Matriz Dispersa", fontcolor=black];
+node[shape=box, style=filled, fontname="Helvetica", fontsize=10];
+edge[penwidth=1.2, color=gray];
+{ rank=same; H_Guatemala[label="Guatemala", fillcolor=lightblue, fontcolor=black]; H_Jutiapa[label="Jutiapa", fillcolor=lightblue, fontcolor=black]; H_Escuintla[label="Escuintla", fillcolor=lightblue, fontcolor=black]; }
+V_IGSS[label="IGSS", fillcolor=lightgreen, fontcolor=black];
+V_Cinepolis[label="Cinepolis", fillcolor=lightgreen, fontcolor=black];
+V_Max[label="Max", fillcolor=lightgreen, fontcolor=black];
+N_bryan07[label="bryan07", fillcolor=white, fontcolor=black, style="rounded,filled"];
+N_Cristofer[label="Cristofer", fillcolor=white, fontcolor=black, style="rounded,filled"];
+N_Ignacio4[label="Ignacio4", fillcolor=white, fontcolor=black, style="rounded,filled"];
+N_Xoy3[label="Xoy3", fillcolor=white, fontcolor=black, style="rounded,filled"];
+H_Guatemala -> H_Jutiapa [dir=both, color=blue, penwidth=1.5];
+H_Guatemala -> N_bryan07 [dir=both, color=darkorange, penwidth=1.5];
+N_bryan07 -> N_Cristofer [dir=both, color=darkorange, penwidth=1.2];
+H_Jutiapa -> H_Escuintla [dir=both, color=blue, penwidth=1.5];
+H_Jutiapa -> N_Ignacio4 [dir=both, color=darkorange, penwidth=1.5];
+H_Escuintla -> N_Xoy3 [dir=both, color=darkorange, penwidth=1.5];
+V_IGSS -> V_Cinepolis [dir=both, color=green, penwidth=1.5];
+V_IGSS -> N_bryan07 [dir=both, color=darkorange, penwidth=1.5];
+N_bryan07 -> N_Ignacio4 [dir=both, color=darkorange, penwidth=1.2];
+V_Cinepolis -> V_Max [dir=both, color=green, penwidth=1.5];
+V_Cinepolis -> N_Cristofer [dir=both, color=darkorange, penwidth=1.5];
+V_Max -> N_Xoy3 [dir=both, color=darkorange, penwidth=1.5];
+}
