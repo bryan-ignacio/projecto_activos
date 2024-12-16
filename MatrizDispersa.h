@@ -257,22 +257,26 @@ void MatrizDispersa::insertarAlFinal(Node *valor, Node *cabeH, Node *cabeV) {
 
 void MatrizDispersa::reporte() {
     string dot = "digraph MatrizDispersa {\n";
-    dot += "rankdir=TB;\n"; // Configuración base de arriba hacia abajo
-    dot += "node[shape=box, style=filled, color=lightgrey];\n";
+    dot += "rankdir=TB;\n"; // Configuración general de arriba hacia abajo
+    dot += "graph[fontsize=12, labelloc=t, label=\"Matriz Dispersa\", fontcolor=black];\n";
+    dot += "node[shape=box, style=filled, fontname=\"Helvetica\", fontsize=10];\n";
+    dot += "edge[penwidth=1.2, color=gray];\n";
 
-    // Cabeceras Horizontales (Departamentos en el eje X)
-    dot += "{ rank=same; ";
+    // Cabeceras Horizontales (Departamentos)
+    dot += "{ rank=same; "; // Fuerza a los nodos a estar en el mismo nivel
     Node *hdH = this->cabeH;
     while (hdH != nullptr) {
-        dot += "H_" + hdH->user->getDepartamento() + "[label=\"" + hdH->user->getDepartamento() + "\", color=lightblue]; ";
+        dot += "H_" + hdH->user->getDepartamento() +
+               "[label=\"" + hdH->user->getDepartamento() + "\", fillcolor=lightblue, fontcolor=black]; ";
         hdH = hdH->sig;
     }
     dot += "}\n";
 
-    // Cabeceras Verticales (Empresas en el eje Y)
+    // Cabeceras Verticales (Empresas)
     Node *hdV = this->cabeV;
     while (hdV != nullptr) {
-        dot += "V_" + hdV->user->getEmpresa() + "[label=\"" + hdV->user->getEmpresa() + "\", color=lightgreen];\n";
+        dot += "V_" + hdV->user->getEmpresa() +
+               "[label=\"" + hdV->user->getEmpresa() + "\", fillcolor=lightgreen, fontcolor=black];\n";
         hdV = hdV->abajo;
     }
 
@@ -281,44 +285,51 @@ void MatrizDispersa::reporte() {
     while (horiz != nullptr) {
         Node *aux = horiz->abajo;
         while (aux != nullptr) {
-            dot += "N_" + aux->user->getUsername() + "[label=\"" + aux->user->getUsername() + "\", color=white];\n";
+            dot += "N_" + aux->user->getUsername() +
+                   "[label=\"" + aux->user->getUsername() + "\", fillcolor=white, fontcolor=black, style=\"rounded,filled\"];\n";
             aux = aux->abajo;
         }
         horiz = horiz->sig;
     }
 
-    // Relaciones horizontales
+    // Relaciones horizontales entre departamentos y nodos
     horiz = this->cabeH;
     while (horiz != nullptr) {
         if (horiz->sig != nullptr) {
-            dot += "H_" + horiz->user->getDepartamento() + " -> H_" + horiz->sig->user->getDepartamento() + " [dir=both];\n";
+            dot += "H_" + horiz->user->getDepartamento() + " -> H_" + horiz->sig->user->getDepartamento() +
+                   " [dir=both, color=blue, penwidth=1.5];\n";
         }
         Node *aux = horiz->abajo;
         if (aux != nullptr) {
-            dot += "H_" + horiz->user->getDepartamento() + " -> N_" + aux->user->getUsername() + " [dir=both];\n";
+            dot += "H_" + horiz->user->getDepartamento() + " -> N_" + aux->user->getUsername() +
+                   " [dir=both, color=darkorange, penwidth=1.5];\n";
         }
         while (aux != nullptr) {
             if (aux->abajo != nullptr) {
-                dot += "N_" + aux->user->getUsername() + " -> N_" + aux->abajo->user->getUsername() + " [dir=both];\n";
+                dot += "N_" + aux->user->getUsername() + " -> N_" + aux->abajo->user->getUsername() +
+                       " [dir=both, color=darkorange, penwidth=1.2];\n";
             }
             aux = aux->abajo;
         }
         horiz = horiz->sig;
     }
 
-    // Relaciones verticales
+    // Relaciones verticales entre empresas y nodos
     Node *vert = this->cabeV;
     while (vert != nullptr) {
         if (vert->abajo != nullptr) {
-            dot += "V_" + vert->user->getEmpresa() + " -> V_" + vert->abajo->user->getEmpresa() + " [dir=both];\n";
+            dot += "V_" + vert->user->getEmpresa() + " -> V_" + vert->abajo->user->getEmpresa() +
+                   " [dir=both, color=green, penwidth=1.5];\n";
         }
         Node *aux = vert->sig;
         if (aux != nullptr) {
-            dot += "V_" + vert->user->getEmpresa() + " -> N_" + aux->user->getUsername() + " [dir=both];\n";
+            dot += "V_" + vert->user->getEmpresa() + " -> N_" + aux->user->getUsername() +
+                   " [dir=both, color=darkorange, penwidth=1.5];\n";
         }
         while (aux != nullptr) {
             if (aux->sig != nullptr) {
-                dot += "N_" + aux->user->getUsername() + " -> N_" + aux->sig->user->getUsername() + " [dir=both];\n";
+                dot += "N_" + aux->user->getUsername() + " -> N_" + aux->sig->user->getUsername() +
+                       " [dir=both, color=darkorange, penwidth=1.2];\n";
             }
             aux = aux->sig;
         }
