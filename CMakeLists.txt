@@ -3,4 +3,7 @@ project(project_uno)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(project_uno main.cpp)
+add_executable(project_uno main.cpp
+        Usuario.h
+        MatrizDispersa.h
+        Node.h)

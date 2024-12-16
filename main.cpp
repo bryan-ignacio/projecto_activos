@@ -26,12 +26,8 @@ int main() {
                 cin >> usuario;
                 cout << "Ingresa password:" << endl;
                 cin >> contrasena;
-                cout << "Ingresa Departamento:" << endl;
-                cin >> departamento;
-                cout << "Ingresa Empresa:" << endl;
-                cin >> empresa;
                 cout << "_________________________" << endl;
-                if (usuario == "admin") {
+                if (usuario == "admin" && contrasena == "admin") {
                     int optionAdmin;
                     do {
                         cout << "==================================================" << endl;
@@ -99,7 +95,7 @@ int main() {
                                 break;
                         }
                     } while (optionAdmin != 9);
-                } else if (usuario == "user") {
+                } else if (usuario == "user" && contrasena == "user") {
                     int optionUser;
                     do {
                         string name;

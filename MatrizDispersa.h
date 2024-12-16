@@ -2,7 +2,6 @@
 #include <fstream>
 #include <cstdlib> // Para usar system()
 #include "Node.h"
-
 using namespace std;
 
 class MatrizDispersa {
@@ -14,13 +13,13 @@ public:
 
     bool estaVacia();
 
-    Node *cabeceraHorizontal(int valor);
+    Node *cabeceraHorizontal(string departamento);
 
-    Node *cabeceraVertical(int valor);
+    Node *cabeceraVertical(string empresa);
 
-    Node *insertarCabeceraH(int valor);
+    Node *insertarCabeceraH(string departamento);
 
-    Node *insertarCabeceraV(int valor);
+    Node *insertarCabeceraV(string empresa);
 
     void insertarAlFinal(Node *valor, Node *cabeH, Node *cabeV);
 
@@ -32,15 +31,15 @@ public:
 
     void insertarAlMedioV(Node *valor, Node *vertical);
 
-    void insertarValor(int valor, int cabH, int cabV);
+    void insertarValor(Node *valor, string cabH, string cabV);
 
     Node *enCabeceraH(Node *node);
 
     Node *enCabeceraV(Node *node);
 
-    bool masDerecha(Node *cabeH, int cabH);
+    bool masDerecha(Node *cabeH, string cabH);
 
-    bool masAbajo(Node *cabeV, int cabV);
+    bool masAbajo(Node *cabeV, string cabV);
 
     void reporte();
 };
@@ -70,27 +69,27 @@ Node *MatrizDispersa::enCabeceraV(Node *node) {
     return aux;
 }
 
-
-bool MatrizDispersa::masDerecha(Node *cabeH, int cabH) {
+bool MatrizDispersa::masDerecha(Node *cabeH, string cabH) {
     Node *aux = cabeH;
     while (aux != nullptr) {
-        if (aux->valor == cabH) return true;
+        if (aux->user->getDepartamento() == cabH) return true;
         aux = aux->sig;
     }
     return false;
 }
 
-bool MatrizDispersa::masAbajo(Node *cabeV, int cabV) {
+bool MatrizDispersa::masAbajo(Node *cabeV, string cabV) {
     Node *aux = cabeV;
     while (aux != nullptr) {
-        if (aux->valor == cabV) return true;
+        if (aux->user->getEmpresa() == cabV) return true;
         aux = aux->abajo;
     }
     return false;
 }
 
-Node *MatrizDispersa::insertarCabeceraH(int valor) {
-    Node *nuevaCabecera = new Node(valor);
+Node *MatrizDispersa::insertarCabeceraH(string departamento) {
+    Usuario *usuario = new Usuario("", "", "", departamento, "");
+    Node *nuevaCabecera = new Node(usuario);
     if (this->cabeH == nullptr) {
         this->cabeH = nuevaCabecera;
         return nuevaCabecera;
@@ -106,8 +105,9 @@ Node *MatrizDispersa::insertarCabeceraH(int valor) {
     return nuevaCabecera;
 }
 
-Node *MatrizDispersa::insertarCabeceraV(int valor) {
-    Node *nuevaCabecera = new Node(valor);
+Node *MatrizDispersa::insertarCabeceraV(string empresa) {
+    Usuario *usuario = new Usuario("", "", "", "", empresa);
+    Node *nuevaCabecera = new Node(usuario);
     if (this->cabeV == nullptr) {
         this->cabeV = nuevaCabecera;
         return nuevaCabecera;
@@ -123,30 +123,29 @@ Node *MatrizDispersa::insertarCabeceraV(int valor) {
     return nuevaCabecera;
 }
 
-Node *MatrizDispersa::cabeceraHorizontal(int valor) {
+Node *MatrizDispersa::cabeceraHorizontal(string departamento) {
     if (estaVacia()) {
         return nullptr;
     }
     Node *aux = this->cabeH;
     while (aux != nullptr) {
-        if (aux->valor == valor) return aux;
+        if (aux->user->getDepartamento() == departamento) return aux;
         aux = aux->sig;
     }
     return nullptr;
 }
 
-Node *MatrizDispersa::cabeceraVertical(int valor) {
+Node *MatrizDispersa::cabeceraVertical(string empresa) {
     if (estaVacia()) {
         return nullptr;
     }
     Node *aux = this->cabeV;
     while (aux != nullptr) {
-        if (aux->valor == valor) return aux;
+        if (aux->user->getEmpresa() == empresa) return aux;
         aux = aux->abajo;
     }
     return nullptr;
 }
-
 
 void MatrizDispersa::insertarAlFinalH(Node *valor, Node *cabeH) {
     Node *aux = cabeH;
@@ -180,11 +179,11 @@ void MatrizDispersa::insertarAlMedioV(Node *valor, Node *vertical) {
     vertical->prev = valor;
 }
 
-void MatrizDispersa::insertarValor(int valor, int cabH, int cabV) {
-
+void MatrizDispersa::insertarValor(Node *valor, string cabH, string cabV) {
     Node *cabeH = nullptr;
     Node *cabeV = nullptr;
-    Node *usuarioNuevo = new Node(valor);
+    Usuario *newUser = valor->user;
+    Node *usuarioNuevo = new Node(newUser);
 
     if (estaVacia()) {
         cabeH = insertarCabeceraH(cabH);
@@ -256,102 +255,83 @@ void MatrizDispersa::insertarAlFinal(Node *valor, Node *cabeH, Node *cabeV) {
     insertarAlFinalV(valor, cabeV);
 }
 
-
 void MatrizDispersa::reporte() {
-    string dot = "digraph G {\n"
-                 "rankdir=LR;\n" // Orientación horizontal
-                 "node[shape=box];\n";
+    string dot = "digraph MatrizDispersa {\n";
+    dot += "rankdir=LR;\n"; // Orientación horizontal
+    dot += "node[shape=box, style=filled, color=lightgrey];\n";
 
-    // Generar nodos de las cabeceras horizontales
+    // Agrupación de cabeceras horizontales
+    dot += "subgraph cluster_horizontales {\n";
+    dot += "label=\"Cabeceras Horizontales\";\n";
     Node *hdH = this->cabeH;
     while (hdH != nullptr) {
-        dot += "H" + to_string(hdH->valor) + "[label=\"H" + to_string(hdH->valor) +
-               "\", group=1, style=filled, color=lightblue];\n";
+        dot += "H_" + hdH->user->getDepartamento() + "[label=\"H:" + hdH->user->getDepartamento() + "\", color=lightblue];\n";
         hdH = hdH->sig;
     }
+    dot += "}\n";
 
-    // Generar nodos de las cabeceras verticales
+    // Agrupación de cabeceras verticales
+    dot += "subgraph cluster_verticales {\n";
+    dot += "label=\"Cabeceras Verticales\";\n";
     Node *hdV = this->cabeV;
     while (hdV != nullptr) {
-        dot += "V" + to_string(hdV->valor) + "[label=\"V" + to_string(hdV->valor) +
-               "\", style=filled, color=lightgreen];\n";
+        dot += "V_" + hdV->user->getEmpresa() + "[label=\"V:" + hdV->user->getEmpresa() + "\", color=lightgreen];\n";
         hdV = hdV->abajo;
     }
+    dot += "}\n";
 
-    // Generar nodos internos de la matriz
-    hdH = this->cabeH;
-    while (hdH != nullptr) {
-        Node *aux = hdH->abajo;
+    // Nodos internos
+    Node *horiz = this->cabeH;
+    while (horiz != nullptr) {
+        Node *aux = horiz->abajo;
         while (aux != nullptr) {
-            dot += "N" + to_string(aux->valor) + "[label=\"" + to_string(aux->valor) + "\", group=" +
-                   to_string(aux->sig ? aux->sig->valor : hdH->valor + 1) + "];\n";
+            dot += "N_" + aux->user->getFullName() + "[label=\"" + aux->user->toString() + "\", color=white];\n";
             aux = aux->abajo;
         }
-        hdH = hdH->sig;
+        horiz = horiz->sig;
     }
 
-    // Relacionar cabeceras horizontales con nodos
-    hdH = this->cabeH;
-    while (hdH != nullptr) {
-        if (hdH->abajo != nullptr) {
-            dot += "H" + to_string(hdH->valor) + " -> N" + to_string(hdH->abajo->valor) + " [dir=both];\n";
+    // Relaciones horizontales
+    horiz = this->cabeH;
+    while (horiz != nullptr) {
+        if (horiz->sig != nullptr) {
+            dot += "H_" + horiz->user->getDepartamento() + " -> H_" + horiz->sig->user->getDepartamento() + " [dir=both];\n";
         }
-        hdH = hdH->sig;
-    }
-
-    // Relacionar cabeceras verticales con nodos
-    hdV = this->cabeV;
-    while (hdV != nullptr) {
-        if (hdV->sig != nullptr) {
-            dot += "V" + to_string(hdV->valor) + " -> N" + to_string(hdV->sig->valor) + " [dir=both];\n";
+        Node *aux = horiz->abajo;
+        if (aux != nullptr) {
+            dot += "H_" + horiz->user->getDepartamento() + " -> N_" + aux->user->getFullName() + " [dir=both];\n";
         }
-        hdV = hdV->abajo;
-    }
-
-    // Generar relaciones horizontales entre nodos internos
-    hdH = this->cabeH;
-    while (hdH != nullptr) {
-        Node *aux = hdH->abajo;
         while (aux != nullptr) {
             if (aux->abajo != nullptr) {
-                dot += "N" + to_string(aux->valor) + " -> N" + to_string(aux->abajo->valor) + " [dir=both];\n";
+                dot += "N_" + aux->user->getFullName() + " -> N_" + aux->abajo->user->getFullName() + " [dir=both];\n";
             }
             aux = aux->abajo;
         }
-        hdH = hdH->sig;
+        horiz = horiz->sig;
     }
 
-    // Generar relaciones verticales entre nodos internos
-    hdV = this->cabeV;
-    while (hdV != nullptr) {
-        Node *aux = hdV->sig;
+    // Relaciones verticales
+    Node *vert = this->cabeV;
+    while (vert != nullptr) {
+        if (vert->abajo != nullptr) {
+            dot += "V_" + vert->user->getEmpresa() + " -> V_" + vert->abajo->user->getEmpresa() + " [dir=both];\n";
+        }
+        Node *aux = vert->sig;
+        if (aux != nullptr) {
+            dot += "V_" + vert->user->getEmpresa() + " -> N_" + aux->user->getFullName() + " [dir=both];\n";
+        }
         while (aux != nullptr) {
             if (aux->sig != nullptr) {
-                dot += "N" + to_string(aux->valor) + " -> N" + to_string(aux->sig->valor) + " [dir=both];\n";
+                dot += "N_" + aux->user->getFullName() + " -> N_" + aux->sig->user->getFullName() + " [dir=both];\n";
             }
             aux = aux->sig;
         }
-        hdV = hdV->abajo;
+        vert = vert->abajo;
     }
 
-    // Relacionar cabeceras horizontales entre sí
-    hdH = this->cabeH;
-    while (hdH != nullptr && hdH->sig != nullptr) {
-        dot += "H" + to_string(hdH->valor) + " -> H" + to_string(hdH->sig->valor) + " [dir=both];\n";
-        hdH = hdH->sig;
-    }
-
-    // Relacionar cabeceras verticales entre sí
-    hdV = this->cabeV;
-    while (hdV != nullptr && hdV->abajo != nullptr) {
-        dot += "V" + to_string(hdV->valor) + " -> V" + to_string(hdV->abajo->valor) + " [dir=both];\n";
-        hdV = hdV->abajo;
-    }
-
-    // Finalizar el archivo DOT
     dot += "}\n";
 
-    // Guardar en un archivo .dot
+    // Guardar el archivo DOT
     string dotFile = "matriz.dot";
     string pngFile = "matriz.png";
 
@@ -359,13 +339,13 @@ void MatrizDispersa::reporte() {
     file << dot;
     file.close();
 
-    // Ejecutar comando para convertir .dot a .png
+    // Ejecutar comando para convertir DOT a PNG
     string command = "dot -Tpng " + dotFile + " -o " + pngFile;
     int result = system(command.c_str());
 
     if (result == 0) {
-        cout << "Reporte generado en '" << pngFile << "'" << endl;
+        cout << "Reporte generado exitosamente en '" << pngFile << "'." << endl;
     } else {
-        cout << "Error al generar la imagen." << endl;
+        cout << "Error al generar la imagen. Asegúrate de tener Graphviz instalado." << endl;
     }
 }

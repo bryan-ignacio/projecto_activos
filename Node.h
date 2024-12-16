@@ -2,22 +2,22 @@
 // Created by Bryan Ignacio on 12/15/24.
 //
 #include <iostream>
+#include "Usuario.h"
 
 class Node {
 public:
-    int valor;
+    Usuario *user;
     Node *sig;
     Node *prev;
     Node *arriba;
     Node *abajo;
     Node *adelante;
     Node *atras;
-
-    Node(int valor);
+    Node(Usuario *user);
 };
 
-Node::Node(int value) {
-    this->valor = value;
+Node::Node(Usuario *user) {
+    this->user = user;
     this->prev = nullptr;
     this->sig = nullptr;
     this->arriba = nullptr;

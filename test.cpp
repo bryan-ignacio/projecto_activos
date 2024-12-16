@@ -1,13 +1,11 @@
+//
+// Created by Bryan Ignacio on 12/15/24.
+//
 #include <iostream>
-#include "MatrizDispersa.h"
+#include "Usuario.h"
 using namespace std;
 
 int main(){
-    MatrizDispersa *matriz = new MatrizDispersa();
-    matriz->insertarValor(5, 0, 0);
-    matriz->insertarValor(8, 1, 0);
-    matriz->insertarValor(10, 2, 1);
-    matriz->insertarValor(15, 1, 1);
-    matriz->reporte();
-    return 0;
+    Usuario *user1 = new Usuario("bryan007", "contra123", "Bryan Ignacio", "Guatemala", "DevsGT");
+    cout << user1->toString() << endl;
 }
