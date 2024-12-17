@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstdlib> // Para usar system()
 #include "Node.h"
+
 using namespace std;
 
 class MatrizDispersa {
@@ -40,6 +41,8 @@ public:
     bool masDerecha(Node *cabeH, string cabH);
 
     bool masAbajo(Node *cabeV, string cabV);
+
+    Node *buscarUsuarioPorUsername(string usernameParametro);
 
     void reporte();
 };
@@ -250,6 +253,23 @@ void MatrizDispersa::insertarValor(Node *valor, string cabH, string cabV) {
 
 }
 
+Node *MatrizDispersa::buscarUsuarioPorUsername(string usernameParametro) {
+    // Buscar en la cabecera horizontal
+    Node *auxH = this->cabeH;
+    while (auxH != nullptr) {
+        Node *auxV = auxH;
+        // Buscar en la cabecera vertical asociada
+        while (auxV != nullptr) {
+            if (auxV->user->getUsername() == usernameParametro) {
+                return auxV; // Retornar el nodo si encontramos el usuario
+            }
+            auxV = auxV->abajo; // Avanzar en la columna
+        }
+        auxH = auxH->sig; // Avanzar en la fila
+    }
+    return nullptr; // Si no encontramos el usuario
+}
+
 void MatrizDispersa::insertarAlFinal(Node *valor, Node *cabeH, Node *cabeV) {
     insertarAlFinalH(valor, cabeH);
     insertarAlFinalV(valor, cabeV);
@@ -286,7 +306,8 @@ void MatrizDispersa::reporte() {
         Node *aux = horiz->abajo;
         while (aux != nullptr) {
             dot += "N_" + aux->user->getUsername() +
-                   "[label=\"" + aux->user->getUsername() + "\", fillcolor=white, fontcolor=black, style=\"rounded,filled\"];\n";
+                   "[label=\"" + aux->user->getUsername() +
+                   "\", fillcolor=white, fontcolor=black, style=\"rounded,filled\"];\n";
             aux = aux->abajo;
         }
         horiz = horiz->sig;

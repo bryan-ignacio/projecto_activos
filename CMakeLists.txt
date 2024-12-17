@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(project_uno main.cpp
         Usuario.h
         MatrizDispersa.h
-        Node.h)
+        Node.h
+        Activo.h)

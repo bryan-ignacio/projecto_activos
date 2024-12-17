@@ -26,5 +26,12 @@ int main() {
 
     matriz->reporte();
 
+    if(matriz->buscarUsuarioPorUsername("Hola") != nullptr){
+        cout << "Nodo encontrado" << endl;
+    }else{
+        cout << "Nodo no encontrado" << endl;
+    }
+
+
     return 0;
 }

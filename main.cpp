@@ -1,10 +1,7 @@
 #include <iostream>
 #include "MatrizDispersa.h"
 
-
 using namespace std;
-
-
 
 int main() {
     MatrizDispersa *matriz = new MatrizDispersa();
@@ -75,7 +72,7 @@ int main() {
                                 cout << "\t>Ingrese Empresa: " << endl;
                                 getline(cin, empr);
                                 // agregar el nuevo Usuario a la matriz.
-                                user = new Usuario(name, pass,full, depa,empr);
+                                user = new Usuario(name, pass, full, depa, empr);
                                 node = new Node(user);
                                 matriz->insertarValor(node, node->user->getDepartamento(), node->user->getEmpresa());
                                 cout << "........................." << endl;
@@ -124,13 +121,14 @@ int main() {
                                 break;
                         }
                     } while (optionAdmin != 9);
-                } else if (usuario == "user" && contrasena == "user") {
+                } else if (matriz->buscarUsuarioPorUsername(usuario) != nullptr) {
+                    Node *nodeEncontrado = matriz->buscarUsuarioPorUsername(usuario);
                     int optionUser;
                     do {
                         string name;
                         string description;
                         cout << "=========================" << endl;
-                        cout << "   USUARIO: (Username)   " << endl;
+                        cout << "   USUARIO: ("+ nodeEncontrado->user->getUsername()+")" << endl;
                         cout << "=========================" << endl;
                         cout << "1. Agregar Activo." << endl;
                         cout << "2. Eliminar Activo." << endl;
