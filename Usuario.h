@@ -2,6 +2,7 @@
 // Created by Bryan Ignacio on 12/15/24.
 //
 #include <iostream>
+#include "AVL.h"
 
 using namespace std;
 
@@ -13,6 +14,7 @@ private:
     string departamentoH;
     string empresaV;
 public:
+    AVL *arbolActivos = new AVL();
     Usuario(string username, string password, string fullname, string departamento, string empresa);
 
     void setUsername(string username);

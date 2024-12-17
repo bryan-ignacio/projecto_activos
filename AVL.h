@@ -28,6 +28,7 @@ private:
 
     string print(NodeAVL *root, int &count);
 
+    string printActivos(NodeAVL *node); // Método auxiliar recursivo
 public:
     NodeAVL *root;
 
@@ -40,6 +41,8 @@ public:
     void eliminar(const string &idActivo);
 
     string print();
+
+    string printActivos(); // Método público para imprimir activos
 };
 
 AVL::AVL() {
@@ -201,6 +204,19 @@ string AVL::print() {
     string dot = "digraph G {\n\tnode [shape=circle];\n\t";
     dot += print(this->root, count);
     dot += "\n}";
+    string dotFile = "activosAVL.dot";
+    string pngFile = "activosAVL.png";
+    ofstream file(dotFile);
+    file << dot;
+    file.close();
+    // Ejecutar comando para convertir DOT a PNG
+    string command = "dot -Tpng " + dotFile + " -o " + pngFile;
+    int result = system(command.c_str());
+    if (result == 0) {
+        cout << "Reporte generado exitosamente en '" << pngFile << "'." << endl;
+    } else {
+        cout << "Error al generar la imagen. Asegúrate de tener Graphviz instalado." << endl;
+    }
     return dot;
 }
 
@@ -222,4 +238,17 @@ string AVL::print(NodeAVL *root, int &count) {
     }
 
     return dot;
+}
+
+string AVL::printActivos() {
+    return printActivos(this->root);
+}
+
+string AVL::printActivos(NodeAVL *node) {
+    if (node == nullptr) return ""; // Caso base: nodo vacío
+    // Recorrido in-order: izquierda -> raíz -> derecha
+    string left = printActivos(node->left);
+    string current = "idActivo: " + node->activo->getIdActivo() + ", nombre: " + node->activo->getName() + "\n";
+    string right = printActivos(node->right);
+    return left + current + right;
 }
