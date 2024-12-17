@@ -7,4 +7,6 @@ add_executable(project_uno main.cpp
         Usuario.h
         MatrizDispersa.h
         Node.h
-        Activo.h)
+        Activo.h
+        NodeAVL.h
+        AVL.h)

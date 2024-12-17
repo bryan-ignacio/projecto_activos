@@ -1,6 +1,7 @@
 //
 // Created by Bryan Ignacio on 12/15/24.
 //
+
 #include <iostream>
 #include <string>
 #include <random>
@@ -26,6 +27,7 @@ public:
 
     void setDescription(string descriptionActivo);
 
+    string toString();
 private:
     string generarId15caracteres();
 };
@@ -68,3 +70,8 @@ string Activo::generarId15caracteres() {
     }
     return id;
 }
+
+string Activo::toString() {
+    return "Activo->[ id: "+this->idActivo+ " name: " + this->name + " descripcion: " + this->description + "]";
+}
+
