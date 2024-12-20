@@ -105,8 +105,8 @@ int main() {
                                 cout << "........................." << endl;
                                 cout << "Reporte Activos de un Usuario: " << endl;
                                 cout << "ingrese username:" << endl;
-                                cin>> repoUser;
-                                matriz->buscarUsuarioPorUsername(repoUser)
+                                cin >> repoUser;
+                                matriz->buscarUsuarioPorUsername(repoUser)->user->arbolActivos->print();
                                 cout << "........................." << endl;
                                 break;
                             case 7:
@@ -135,7 +135,7 @@ int main() {
                         string description;
                         string idActivo;
                         cout << "=========================" << endl;
-                        cout << "   USUARIO: ("+ usuarioEncontrado->user->getUsername()+")" << endl;
+                        cout << "   USUARIO: (" + usuarioEncontrado->user->getUsername() + ")" << endl;
                         cout << "=========================" << endl;
                         cout << "1. Agregar Activo." << endl;
                         cout << "2. Eliminar Activo." << endl;
@@ -165,21 +165,20 @@ int main() {
                                 usuarioEncontrado->user->arbolActivos->printActivos();
                                 cout << "Ingrese el ID del Activo a Eliminar: " << endl;
                                 cin >> idActivo;
-                                cout << "id: ---   nombre: ---- : descripcion: ----" << endl;
                                 usuarioEncontrado->user->arbolActivos->eliminar(idActivo);
+                                cout << "el activo fue eliminado" << endl;
+                                usuarioEncontrado->user->arbolActivos->printActivos();
                                 cout << "........................." << endl;
                                 break;
                             case 3:
                                 cout << "........................." << endl;
                                 cout << "Modificar Activo: " << endl;
                                 cout << "mostrar lista de activos" << endl;
+                                usuarioEncontrado->user->arbolActivos->printActivos();
                                 cout << "Ingrese el IdActivo a Modificar: ---" << endl;
-                                if (true) {
-                                    cout << "ingrese descripcion nueva: " << endl;
-                                    cout << "Activo Modificado:" << endl;
-                                    cout << "ID: --- NOMBRE: --- DESCRIPCION: ---" << endl;
-                                };
-                                cout << "........................." << endl;
+                                cout << "ingrese descripcion nueva: " << endl;
+                                cout << "Activo Modificado:" << endl;
+                                cout << "ID: --- NOMBRE: --- DESCRIPCION: ---" << endl;
                                 break;
                             case 4:
                                 cout << "........................." << endl;
