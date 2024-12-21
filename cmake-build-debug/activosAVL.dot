@@ -1,0 +1,15 @@
+digraph G {
+	node [shape=circle];
+	n0 [label=canastas];
+	n0 -> n1;
+	n1 [label=balanza];
+	n1 -> n2;
+	n2 [label=cargadores];
+	n1 -> n3;
+	n3 [label=cables];
+	n0 -> n4;
+	n4 [label=linternas];
+	n4 -> n5;
+	n5 [label=tazos];
+	
+}
